@@ -4,6 +4,7 @@ import sqlite3
 import datetime
 import re
 import html
+import os
 
 app = Flask(__name__)
 
@@ -190,10 +191,12 @@ def get_reports():
 def report_form():
     return render_template("report_form.html")
 
+# Add a health check endpoint for Render
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify({"status": "healthy"}), 200
+
 if __name__ == "__main__":
-    app.run(debug=True)
-
-
-
-
-
+    # Get port from environment variable or use default
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
