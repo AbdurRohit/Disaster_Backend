@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_cors import CORS  # Import Flask-CORS extension
 import sqlite3
 import datetime
 import re
@@ -7,6 +8,15 @@ import html
 import os
 
 app = Flask(__name__)
+# # Enable CORS for all routes and origins
+# CORS(app, resources={r"/*": {"origins": "*"}})
+
+# For more specific CORS configuration:
+CORS(app, resources={r"/*": {
+    "origins": ["http://localhost:3000", "https://your-nextjs-app-domain.com"],
+    "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization"]
+}})
 
 # Initialize the database
 def init_db():
